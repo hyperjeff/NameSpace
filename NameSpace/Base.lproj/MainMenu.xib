@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
+            <connections>
+                <outlet property="delegate" destination="Voe-Tx-rLC" id="GzC-gU-4Uq"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="NameSpace" customModuleProvider="target">
+            <connections>
+                <outlet property="menu" destination="XdI-pq-qR1" id="Ugg-qz-wIs"/>
+                <outlet property="preferenceWindow" destination="YTW-Yi-R0S" id="x4G-1J-DaU"/>
+                <outlet property="table" destination="AwH-9I-yxS" id="i7O-Df-r1U"/>
+            </connections>
+        </customObject>
+        <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <menu id="XdI-pq-qR1">
+            <items>
+                <menuItem isSeparatorItem="YES" id="Ciu-nB-AgS"/>
+                <menuItem title="Customize Names..." keyEquivalent=", " id="D7J-Ww-FLL">
+                    <connections>
+                        <action selector="showPreferences:" target="Voe-Tx-rLC" id="PGr-cr-OoD"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="NameSpace Project" keyEquivalent="p" id="c7O-b2-t3K">
+                    <connections>
+                        <action selector="openProject:" target="Voe-Tx-rLC" id="W5G-xs-75d"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="r12-gZ-VUh"/>
+                <menuItem title="Quit NameSpace" keyEquivalent="q" id="Bxf-Wq-BMK">
+                    <connections>
+                        <action selector="quitClicked:" target="Voe-Tx-rLC" id="mgo-K5-QlJ"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <connections>
+                <outlet property="delegate" destination="Voe-Tx-rLC" id="haP-0D-wv1"/>
+            </connections>
+            <point key="canvasLocation" x="-60" y="309"/>
+        </menu>
+        <window identifier="Preferences" title="NameSpace" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="YTW-Yi-R0S" customClass="PrefWindow" customModule="NameSpace" customModuleProvider="target">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="1080" y="794" width="240" height="460"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <value key="minFullScreenContentSize" type="size" width="240" height="460"/>
+            <value key="maxFullScreenContentSize" type="size" width="240" height="460"/>
+            <view key="contentView" id="syD-kF-ebg">
+                <rect key="frame" x="0.0" y="0.0" width="240" height="460"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dT-gZ-W3m">
+                        <rect key="frame" x="20" y="20" width="200" height="420"/>
+                        <clipView key="contentView" id="6g9-zh-nw6">
+                            <rect key="frame" x="1" y="1" width="198" height="418"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" tableStyle="fullWidth" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" headerView="9uD-05-JfE" viewBased="YES" id="AwH-9I-yxS">
+                                    <rect key="frame" x="0.0" y="0.0" width="198" height="390"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <size key="intercellSpacing" width="17" height="0.0"/>
+                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn width="186" minWidth="40" maxWidth="1000" id="VBH-6w-GO2">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Space Name">
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="NKJ-gG-Mi8">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                            <prototypeCellViews>
+                                                <tableCellView identifier="NameCellID" id="gpg-RZ-QBo">
+                                                    <rect key="frame" x="8" y="0.0" width="181" height="24"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hf-K5-CCP">
+                                                            <rect key="frame" x="0.0" y="4" width="180" height="16"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="New Space Name" usesSingleLineMode="YES" id="sKa-0b-U9N">
+                                                                <font key="font" usesAppearanceFont="YES"/>
+                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                    </subviews>
+                                                    <connections>
+                                                        <outlet property="textField" destination="8hf-K5-CCP" id="Ede-74-5PD"/>
+                                                    </connections>
+                                                </tableCellView>
+                                            </prototypeCellViews>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="Voe-Tx-rLC" id="0qd-Ww-mbO"/>
+                                        <outlet property="delegate" destination="Voe-Tx-rLC" id="Lht-aC-hZz"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="3g4-gT-QaX">
+                            <rect key="frame" x="-100" y="-100" width="198" height="15"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="anU-XC-WW5">
+                            <rect key="frame" x="-100" y="-100" width="15" height="102"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" wantsLayer="YES" id="9uD-05-JfE">
+                            <rect key="frame" x="0.0" y="0.0" width="198" height="28"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                    </scrollView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="7dT-gZ-W3m" secondAttribute="bottom" constant="20" symbolic="YES" id="PAh-xz-UVP"/>
+                    <constraint firstItem="7dT-gZ-W3m" firstAttribute="leading" secondItem="syD-kF-ebg" secondAttribute="leading" constant="20" symbolic="YES" id="Xvw-8y-9ca"/>
+                    <constraint firstItem="7dT-gZ-W3m" firstAttribute="top" secondItem="syD-kF-ebg" secondAttribute="top" constant="20" symbolic="YES" id="cNy-Vp-RVn"/>
+                    <constraint firstAttribute="trailing" secondItem="7dT-gZ-W3m" secondAttribute="trailing" constant="20" symbolic="YES" id="vo2-AY-5w3"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="Voe-Tx-rLC" id="K3E-9R-VHr"/>
+            </connections>
+            <point key="canvasLocation" x="-59.5" y="-52"/>
+        </window>
+    </objects>
+</document>
