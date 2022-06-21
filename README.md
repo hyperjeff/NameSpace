@@ -1,5 +1,7 @@
 # NameSpace
 
+![Screenshot](screenshot.png)
+
 For years I've been sending Apple feature requests to allow each Space to be given a user-defined name. Until that happens, I offer this app to help.
 
 Note: This app requires that "Automatically rearrenge Spaces based on most recent use" and, only if you use multiple monitors, "Displays have separate Spaces", be turned OFF in System Mission Control prefs. For many, this is a deal killer, but not everyone has to use their Mac the same way. Maybe give this a try anyway, you may end up liking it.
