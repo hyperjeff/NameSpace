@@ -34,9 +34,9 @@ It may surprise you how it improves your ability to keep your computer life orga
 ## Requirements:
 
 * macOS 10.12 (Sierra) thru 13.0 (Ventura)
-* Must turn off (in Mission Control prefs)
- * "Automatically rearrenge Spaces based on most recent use"
- * "Displays have separate Spaces" (if using more than one display)
+* Must turn off (in Mission Control prefs):
+	* "Automatically rearrenge Spaces based on most recent use"
+	* "Displays have separate Spaces" (if using more than one display)
 * All spaces must have a key combo associated with them and be enabled
 * NameSpace must be granted Accessibility and Automation permissions
 * Urge to master chaos
