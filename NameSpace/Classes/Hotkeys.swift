@@ -89,7 +89,7 @@ func headToSpace(atIndex index: Int) {
 	}
 }
 
-func headToSpace0(keymap: KeyInfo) {
+func headToSpace0(keymap: KeyInfo) { // this never worked under all circumstances
 	if keymap.enabled {
 		let maskLookup: [String : (CGKeyCode, CGEventFlags)] = [
 			"shift"   : (57, .maskShift),

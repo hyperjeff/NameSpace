@@ -15,7 +15,9 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="NameSpace" customModuleProvider="target">
             <connections>
+                <outlet property="includeCustomFoldersButton" destination="law-8R-Jbp" id="qLJ-5D-Gec"/>
                 <outlet property="menu" destination="XdI-pq-qR1" id="Ugg-qz-wIs"/>
+                <outlet property="openSpaceFolderMenuItem" destination="oPN-ns-4kN" id="KNe-Yp-oaR"/>
                 <outlet property="preferenceWindow" destination="YTW-Yi-R0S" id="x4G-1J-DaU"/>
                 <outlet property="table" destination="AwH-9I-yxS" id="i7O-Df-r1U"/>
             </connections>
@@ -24,17 +26,22 @@
         <menu id="XdI-pq-qR1">
             <items>
                 <menuItem isSeparatorItem="YES" id="Ciu-nB-AgS"/>
-                <menuItem title="Customize Names..." keyEquivalent=", " id="D7J-Ww-FLL">
+                <menuItem title="Preferences..." keyEquivalent=", " id="D7J-Ww-FLL">
                     <connections>
                         <action selector="showPreferences:" target="Voe-Tx-rLC" id="PGr-cr-OoD"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Open Space Folder" keyEquivalent="f" id="oPN-ns-4kN">
+                    <connections>
+                        <action selector="openSpaceFolder:" target="Voe-Tx-rLC" id="qdh-28-2ma"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="r12-gZ-VUh"/>
                 <menuItem title="NameSpace Project" keyEquivalent="p" id="c7O-b2-t3K">
                     <connections>
                         <action selector="openProject:" target="Voe-Tx-rLC" id="W5G-xs-75d"/>
                     </connections>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="r12-gZ-VUh"/>
                 <menuItem title="Quit NameSpace" keyEquivalent="q" id="Bxf-Wq-BMK">
                     <connections>
                         <action selector="quitClicked:" target="Voe-Tx-rLC" id="mgo-K5-QlJ"/>
@@ -49,16 +56,16 @@
         <window identifier="Preferences" title="NameSpace" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="YTW-Yi-R0S" customClass="PrefWindow" customModule="NameSpace" customModuleProvider="target">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="1080" y="794" width="240" height="460"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="contentRect" x="1080" y="794" width="240" height="508"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2056" height="1285"/>
             <value key="minFullScreenContentSize" type="size" width="240" height="460"/>
             <value key="maxFullScreenContentSize" type="size" width="240" height="460"/>
             <view key="contentView" id="syD-kF-ebg">
-                <rect key="frame" x="0.0" y="0.0" width="240" height="460"/>
+                <rect key="frame" x="0.0" y="0.0" width="240" height="508"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dT-gZ-W3m">
-                        <rect key="frame" x="20" y="20" width="200" height="420"/>
+                        <rect key="frame" x="20" y="68" width="200" height="420"/>
                         <clipView key="contentView" id="6g9-zh-nw6">
                             <rect key="frame" x="1" y="1" width="198" height="418"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -123,18 +130,31 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="law-8R-Jbp">
+                        <rect key="frame" x="18" y="19" width="202" height="18"/>
+                        <buttonCell key="cell" type="check" title="Include Custom Folders" bezelStyle="regularSquare" imagePosition="left" inset="2" id="dB7-K3-I0p">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateCustomFolders:" target="Voe-Tx-rLC" id="fHa-LQ-cZU"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="7dT-gZ-W3m" secondAttribute="bottom" constant="20" symbolic="YES" id="PAh-xz-UVP"/>
+                    <constraint firstItem="law-8R-Jbp" firstAttribute="top" secondItem="AwH-9I-yxS" secondAttribute="bottom" constant="33" id="M3n-vV-7aY"/>
                     <constraint firstItem="7dT-gZ-W3m" firstAttribute="leading" secondItem="syD-kF-ebg" secondAttribute="leading" constant="20" symbolic="YES" id="Xvw-8y-9ca"/>
+                    <constraint firstItem="law-8R-Jbp" firstAttribute="leading" secondItem="syD-kF-ebg" secondAttribute="leading" constant="20" symbolic="YES" id="bQR-ed-Aui"/>
                     <constraint firstItem="7dT-gZ-W3m" firstAttribute="top" secondItem="syD-kF-ebg" secondAttribute="top" constant="20" symbolic="YES" id="cNy-Vp-RVn"/>
+                    <constraint firstAttribute="bottom" secondItem="law-8R-Jbp" secondAttribute="bottom" constant="20" symbolic="YES" id="mLh-c6-GTi"/>
+                    <constraint firstAttribute="trailing" secondItem="law-8R-Jbp" secondAttribute="trailing" constant="20" symbolic="YES" id="vjd-bI-ZJG"/>
                     <constraint firstAttribute="trailing" secondItem="7dT-gZ-W3m" secondAttribute="trailing" constant="20" symbolic="YES" id="vo2-AY-5w3"/>
                 </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="Voe-Tx-rLC" id="K3E-9R-VHr"/>
             </connections>
-            <point key="canvasLocation" x="-59.5" y="-52"/>
+            <point key="canvasLocation" x="-60" y="-165"/>
         </window>
     </objects>
 </document>

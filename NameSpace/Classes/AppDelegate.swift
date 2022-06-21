@@ -9,6 +9,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 	@IBOutlet weak var menu: NSMenu!
 	@IBOutlet weak var preferenceWindow: PrefWindow!
 	@IBOutlet weak var table: NSTableView!
+	@IBOutlet weak var includeCustomFoldersButton: NSButton!
+	@IBOutlet weak var openSpaceFolderMenuItem: NSMenuItem!
 	
 	let workspace = NSWorkspace.shared
 	let defaults = UserDefaults.standard
@@ -24,6 +26,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 	var directionsToMissionControl = ""
 	var directionsToKeyboardControl = ""
 	var spaceRequest: Int?
+	var usesCustomFolders: Bool = false
+	let usesCustomFoldersKey = "UsesCustomFolders"
+	var currentSpaceName: String?
 	
 	func applicationWillFinishLaunching(_ notification: Notification) {
 		NSApplication.shared.setActivationPolicy(.accessory)
@@ -64,41 +69,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 		updateActiveSpaceNumber()
 		readKeycodeMap()
 		
+		let usf = defaults.bool(forKey: usesCustomFoldersKey)
+		includeCustomFoldersButton.state = (usf ? .on : .off)
+		
+		openSpaceFolderMenuItem.isHidden = !usf
+		
 		for (index, name) in spaceNames.enumerated() {
 			menu.insertItem(withTitle: menuTitle(row: index, name: name), action: #selector(spacePicked), keyEquivalent: "", at: index)
 		}
-	}
-	
-	func activate() {
-//		log("\nactivate!")
-
-//		sleep(1)
-//
-//		let source = CGEventSource(stateID: .hidSystemState)
-//
-//		let x = CGEvent(keyboardEventSource: source, virtualKey: 99, keyDown: true)
-//		let y = CGEvent(keyboardEventSource: source, virtualKey: 99, keyDown: false)
-//
-//		x?.post(tap: .cghidEventTap)
-//		y?.post(tap: .cghidEventTap)
 		
-//		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//			self.log("and... go!")
-//			let source = CGEventSource(stateID: .hidSystemState)
-//
-//			let x = CGEvent(keyboardEventSource: source, virtualKey: 99, keyDown: true)
-//			let y = CGEvent(keyboardEventSource: source, virtualKey: 99, keyDown: false)
-//
-//			x?.post(tap: .cghidEventTap)
-//			y?.post(tap: .cghidEventTap)
-//		}
-		
-//		NSApplication.shared.activate(ignoringOtherApps: true)
-		
-//		let task = Process()
-//		task.launchPath = "/usr/bin/osascript"
-//		task.arguments = ["-e", "activate application \"NameSpace\""]
-//		task.launch()
 	}
 	
 	func setupAppHotkey() {
@@ -395,6 +374,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 					})
 					.joined(separator: ", ") + "]")
 				
+				currentSpaceName = spaceNames[index]
+				
 				DispatchQueue.main.async {
 					self.statusBarItem.button?.title = String("\(self.spaceNames[index])")
 				}
@@ -405,6 +386,53 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 	}
 	
 	// MARK: - UI Actions -
+	
+	@IBAction func updateCustomFolders(_ sender: NSButton) {
+		usesCustomFolders = (sender.state == .on)
+		defaults.setValue(usesCustomFolders, forKey: usesCustomFoldersKey)
+		openSpaceFolderMenuItem.isHidden = !usesCustomFolders
+	}
+	
+	@IBAction func openSpaceFolder(_ sender: Any) {
+		func ensureFolderExists(atURL url: URL) -> Bool {
+			var isDirectory: ObjCBool = false
+			if !fileman.fileExists(atPath: url.path, isDirectory: &isDirectory) {
+				do {
+					try fileman.createDirectory(at: url, withIntermediateDirectories: false)
+					return true
+				}
+				catch {
+					log("Alert of some kind")
+					return false
+				}
+			}
+			else if !isDirectory.boolValue {
+				log("Alert: there is a file with that name!")
+				return false
+			}
+			
+			return true
+		}
+		
+		let spacesURL = fileman.homeDirectoryForCurrentUser.appendingPathComponent("Spaces")
+		
+		if let spaceName = currentSpaceName {
+			let thisSpaceURL = spacesURL.appendingPathComponent(spaceName.replacingOccurrences(of: "/", with: ":"))
+			
+			if ensureFolderExists(atURL: spacesURL) &&
+			   ensureFolderExists(atURL: thisSpaceURL) {
+				let task = Process()
+				task.launchPath = "/usr/bin/osascript"
+				task.arguments = ["-e", """
+tell application \"Finder\"
+	activate
+	open (\"\(thisSpaceURL.path)\" as POSIX file)
+end tell
+"""]
+				task.launch()
+			}
+		}
+	}
 	
 	@IBAction func quitClicked(_ sender: NSMenuItem) {
 		NSApplication.shared.terminate(self)
