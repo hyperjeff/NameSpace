@@ -39,7 +39,6 @@ It may surprise you how it improves your ability to keep your computer life orga
 	* "Displays have separate Spaces" (if using more than one display)
 * All spaces must have a key combo associated with them and be enabled
 * NameSpace must be granted Accessibility and Automation permissions
-* Urge to master chaos
 
 ### License:
 
