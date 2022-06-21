@@ -1,6 +1,6 @@
 # NameSpace
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot.jpg)
 
 For years I've been sending Apple feature requests to allow each Space to be given a user-defined name. Until that happens, I offer this app to help.
 
