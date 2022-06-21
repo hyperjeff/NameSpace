@@ -2,6 +2,8 @@
 
 For years I've been sending Apple feature requests to allow each Space to be given a user-defined name. Until that happens, I offer this app to help.
 
+Note: This app requires that "Automatically rearrenge Spaces based on most recent use" and "Displays have separate Spaces" be turned OFF in System Mission Control prefs. For many, this is a deal killer, but not everyone has to use their Mac the same way. Maybe give this a try anyway, you may end up liking it.
+
 NameSpace does these things:
 
 	1) Allows you to name each Space
@@ -18,11 +20,11 @@ Spaces currently just labels each Space as "Desktop 1", etc. If you use dedicate
 It may surprise you how it improves your ability to keep your computer life organized, especially if you have many different projects in flight at the same time.
 
 
-### Operating Instructions:
+### Operating Notes:
 
-* "Customize Names" brings up a preference window to edit the names. You can also reorder names by dragging them up/down
-* To add / remove Spaces, use the system's built-in techniques, and this app should (perhaps after a delay) reflect the new setup, though you'll probably have to also assign a hotkey to any new spaces
-
+* "Customize Names" brings up a preference window to edit the names. You can also reorder names by dragging them up/down.
+* To add / remove Spaces, use the system's built-in techniques, and this app should (perhaps after a delay) reflect the new setup, though you'll probably have to also assign a hotkey to any new spaces.
+* If you would like it, the app can create a set of folders (kept in `~/Spaces`) for your convenience, to associated a folder with each space. Seems silly, but I find it very handy. I store aliases of folders, links, temp files, etc, relevant to a particular Space.
 
 ### Hotkeys, even while the app is in the background:
 
