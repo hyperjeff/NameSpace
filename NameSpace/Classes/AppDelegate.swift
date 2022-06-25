@@ -424,9 +424,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 				let task = Process()
 				task.launchPath = "/usr/bin/osascript"
 				task.arguments = ["-e", """
-tell application \"Finder\"
+tell application "Finder"
 	activate
-	open (\"\(thisSpaceURL.path)\" as POSIX file)
+	open ("\(thisSpaceURL.path)" as POSIX file)
 end tell
 """]
 				task.launch()
