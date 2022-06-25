@@ -31,7 +31,7 @@ It may surprise you how it improves your ability to keep your computer life orga
 ### Hotkeys, even while the app is in the background:
 
 * `⌃⌥↓` shows the NameSpace menu, giving you an alternate way to jump to a space, or for bringing up the preferences.
-* `⌃⌥←` and `⌃⌥→	`	go back or forward thru your Spaces selection history.
+* `⌃⌥←` and `⌃⌥→` go back or forward thru your Spaces selection history.
 
 
 
