@@ -28,7 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 	var spaceRequest: Int?
 	var usesCustomFolders: Bool = false
 	let usesCustomFoldersKey = "UsesCustomFolders"
-	var currentSpaceName: String?
+	var currentSpaceIndex = 0
 	
 	func applicationWillFinishLaunching(_ notification: Notification) {
 		NSApplication.shared.setActivationPolicy(.accessory)
@@ -118,6 +118,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 	func saveSpaceNames() {
 		defaults.set(spaceNames, forKey: spaceNameKey)
 		defaults.synchronize()
+	}
+	
+	func folderURL(named: String) -> URL {
+		fileman
+			.homeDirectoryForCurrentUser.appendingPathComponent("Spaces")
+			.appendingPathComponent(named.replacingOccurrences(of: "/", with: ":"))
+	}
+	
+	func updateFolderName(old: String, new: String) {
+		let oldURL = folderURL(named: old)
+		let newURL = folderURL(named: new)
+		
+		var isDirectory: ObjCBool = true
+		if fileman.fileExists(atPath: oldURL.path, isDirectory: &isDirectory) {
+			do {
+				try fileman.moveItem(at: oldURL, to: newURL)
+			}
+			catch {
+				print("Error: \(error.localizedDescription)")
+			}
+		}
 	}
 	
 	func updateMenuItems() {
@@ -289,6 +310,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 		}
 	}
 	
+	func ensureFolderExists(atURL url: URL) -> Bool {
+		var isDirectory: ObjCBool = false
+		if !fileman.fileExists(atPath: url.path, isDirectory: &isDirectory) {
+			do {
+				try fileman.createDirectory(at: url, withIntermediateDirectories: true)
+				return true
+			}
+			catch {
+				log("Alert: Could not create directory named \"\(url.absoluteString)\"")
+				return false
+			}
+		}
+		else if !isDirectory.boolValue {
+			log("Alert: there is a file with that name!")
+			return false
+		}
+		
+		return true
+	}
+	
 	// MARK: - Callbacks -
 	
 	@objc func spacePicked(item: NSMenuItem) {
@@ -374,7 +415,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 					})
 					.joined(separator: ", ") + "]")
 				
-				currentSpaceName = spaceNames[index]
+				currentSpaceIndex = index
 				
 				DispatchQueue.main.async {
 					self.statusBarItem.button?.title = String("\(self.spaceNames[index])")
@@ -394,33 +435,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 	}
 	
 	@IBAction func openSpaceFolder(_ sender: Any) {
-		func ensureFolderExists(atURL url: URL) -> Bool {
-			var isDirectory: ObjCBool = false
-			if !fileman.fileExists(atPath: url.path, isDirectory: &isDirectory) {
-				do {
-					try fileman.createDirectory(at: url, withIntermediateDirectories: false)
-					return true
-				}
-				catch {
-					log("Alert of some kind")
-					return false
-				}
-			}
-			else if !isDirectory.boolValue {
-				log("Alert: there is a file with that name!")
-				return false
-			}
-			
-			return true
-		}
-		
-		let spacesURL = fileman.homeDirectoryForCurrentUser.appendingPathComponent("Spaces")
-		
-		if let spaceName = currentSpaceName {
-			let thisSpaceURL = spacesURL.appendingPathComponent(spaceName.replacingOccurrences(of: "/", with: ":"))
-			
-			if ensureFolderExists(atURL: spacesURL) &&
-			   ensureFolderExists(atURL: thisSpaceURL) {
+		if currentSpaceIndex < spaceNames.count {
+			let thisSpaceURL = folderURL(named: spaceNames[currentSpaceIndex])
+			if ensureFolderExists(atURL: thisSpaceURL) {
+				
 				let task = Process()
 				task.launchPath = "/usr/bin/osascript"
 				task.arguments = ["-e", """
@@ -433,7 +451,7 @@ end tell
 			}
 		}
 	}
-	
+		
 	@IBAction func quitClicked(_ sender: NSMenuItem) {
 		NSApplication.shared.terminate(self)
 	}
@@ -508,15 +526,31 @@ end tell
 			let row = textField.tag
 			let name = view.string
 			
-			spaceNames[row] = name
-			saveSpaceNames()
-			updateActiveSpaceNumber()
-			updateMenuItem(row, withName: name)
-			table.reloadData()
-			
-			if row < table.numberOfRows - 1 {
-				table.selectRowIndexes(NSIndexSet(index: row + 1) as IndexSet, byExtendingSelection: false)
-				table.view(atColumn: 0, row: row + 1, makeIfNecessary: false)?.becomeFirstResponder()
+			if spaceNames.contains(name) {
+				textField.stringValue = spaceNames[row]
+				
+				let alert = NSAlert()
+				alert.messageText = "Name already taken by another space!"
+				alert.addButton(withTitle: "OK")
+				alert.alertStyle = .warning
+				alert.runModal()
+			}
+			else {
+				let oldSpaceName = spaceNames[row]
+				
+				if oldSpaceName != name {
+					spaceNames[row] = name
+					updateFolderName(old: oldSpaceName, new: name)
+					saveSpaceNames()
+					updateActiveSpaceNumber()
+					updateMenuItem(row, withName: name)
+					table.reloadData()
+					
+					if row < table.numberOfRows - 1 {
+						table.selectRowIndexes(NSIndexSet(index: row + 1) as IndexSet, byExtendingSelection: false)
+						table.view(atColumn: 0, row: row + 1, makeIfNecessary: false)?.becomeFirstResponder()
+					}
+				}
 			}
 		}
 	}
