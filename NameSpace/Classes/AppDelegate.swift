@@ -5,7 +5,7 @@ typealias KeyInfo = (keycode: Int, enabled: Bool, flags: [Bool])
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewDataSource, NSTableViewDelegate, NSTextFieldDelegate, NSWindowDelegate {
-	 
+	
 	@IBOutlet weak var menu: NSMenu!
 	@IBOutlet weak var preferenceWindow: PrefWindow!
 	@IBOutlet weak var table: NSTableView!
@@ -52,8 +52,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 		}
 		
 		if #available(macOS 13.0, *) {
-			directionsToMissionControl = directions(steps: ["Settings", "Desktop & Dock", "Mission Control"])
-			directionsToKeyboardControl = directions(steps: ["Settings", "Keyboard", "Keyboard Shortcuts", "Mission Control"])
+			directionsToMissionControl = directions(steps: ["System Settings", "Desktop & Dock", "Mission Control"])
+			directionsToKeyboardControl = directions(steps: ["System Settings", "Keyboard", "Keyboard Shortcuts...", "Mission Control", "Mission Control (submenu)"])
 		}
 		else {
 			directionsToMissionControl = directions(steps: ["Settings", "Mission Control"])
@@ -101,13 +101,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 	
 	func menuTitle(row: Int, name: String) -> String {
 		var disabled = true
+		let pad = (row < 9) ? " " : ""
 		
 		if keycodeMap.keys.contains(row),
 		   let map = keycodeMap[row] {
 			disabled = !map.enabled
+			
+			if !disabled {
+				let allOtherCodes = keycodeMap.filter { $0.key != row }
+				for code in allOtherCodes {
+					if map.keycode == code.value.keycode &&
+						map.flags == code.value.flags {
+						disabled = true
+						break
+					}
+				}
+			}
 		}
 		
-		let pad = (row < 9) ? " " : ""
 		return "\(pad)\(row + 1).\t\(name)\(disabled ? "   ⚠️" : "")"
 	}
 	
@@ -306,7 +317,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSTableViewD
 		}
 		
 		if !canGoToSpace {
-			alertAboutPrefs(title: "Couldn't Go to Space!", detailedMessage: "Space \(index + 1) has no shortcut. Assign one now by going to:" + directionsToKeyboardControl + "Pick a unique key combo and make sure that it's enabled.")
+			alertAboutPrefs(title: "Couldn't Go to Space!", detailedMessage: "Space \(index + 1) has no unique shortcut.\nTo assign one:" + directionsToKeyboardControl + "Set a unique key combo and make sure the item is enabled.")
 		}
 	}
 	
@@ -558,5 +569,4 @@ end tell
 	func log(_ text: String) {
 		print(text)
 	}
-	
 }
