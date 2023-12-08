@@ -41,7 +41,7 @@ func hotkeyHandler(eventHandlerCall: EventHandlerCallRef?, event: EventRef?, use
 
 func keepTryingToHeadToSpace(atIndex targetIndex: Int) {
 	var activeSpaceID = -999
-	var counter = 9
+	var counter = 1
 	
 	DispatchQueue.global(qos: .background).async {
 		while targetIndex != activeSpaceID - 2 && 0 < counter {
@@ -49,7 +49,7 @@ func keepTryingToHeadToSpace(atIndex targetIndex: Int) {
 				headToSpace(atIndex: targetIndex)
 			}
 			
-			usleep(270_000)
+			usleep(1)
 			
 			if let spaceID = currentSpaceID() {
 				activeSpaceID = spaceID
@@ -89,71 +89,8 @@ func headToSpace(atIndex index: Int) {
 	}
 }
 
-func headToSpace0(keymap: KeyInfo) { // this never worked under all circumstances
-	if keymap.enabled {
-		let maskLookup: [String : (CGKeyCode, CGEventFlags)] = [
-			"shift"   : (57, .maskShift),
-			"control" : (59, .maskControl),
-			"option"  : (58, .maskAlternate),
-			"command" : (55, .maskCommand),
-		]
-		
-		let keycode = keymap.keycode
-		let source = CGEventSource(stateID: .hidSystemState)
-		
-		var metaKeysRequired: [CGKeyCode] = []
-		
-		if let keyDown = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(keycode), keyDown: true),
-		   let keyUp = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(keycode), keyDown: false) {
-		
-			var keyDownFlags: [CGEventFlags] = []
-			
-			for (index, meta) in ["shift", "control", "option", "command"].enumerated() {
-				if keymap.flags[index], let meta = maskLookup[meta] {
-					metaKeysRequired.append(meta.0)
-					keyDownFlags.append(meta.1)
-				}
-			}
-			
-			if !keyDownFlags.isEmpty {
-				keyDown.flags = CGEventFlags(keyDownFlags)
-			}
-			
-			let commandsDown = metaKeysRequired.map {
-				CGEvent(keyboardEventSource: source, virtualKey: $0, keyDown: true)
-			}
-			let commandsUp = metaKeysRequired.map {
-				CGEvent(keyboardEventSource: source, virtualKey: $0, keyDown: false)
-			}
-			
-			commandsDown.forEach { $0?.post(tap: .cghidEventTap) }
-			keyDown.post(tap: .cghidEventTap)
-			keyUp.post(tap: .cghidEventTap)
-			commandsUp.forEach { $0?.post(tap: .cghidEventTap) }
-		}
-	}
-}
-
 func headToSpace(keymap: KeyInfo) {
 	if keymap.enabled {
-		var metaKey = ""
-		var metaKeys: [String] = []
-		
-		for (index, meta) in ["shift", "control", "option", "command"].enumerated() {
-			if keymap.flags[index] {
-				metaKeys.append("\(meta) down")
-			}
-		}
-		
-		if !metaKeys.isEmpty {
-			if metaKeys.count == 1, let only = metaKeys.first {
-				metaKey = " using " + only
-			}
-			else {
-				metaKey = " using {" + metaKeys.joined(separator: ", ") + "}"
-			}
-		}
-		
 		var keycode = keymap.keycode
 		
 		if keymap.flags[3], // ← only remapping for items with command keys currently
@@ -162,12 +99,30 @@ func headToSpace(keymap: KeyInfo) {
 			keycode = actualKeycode
 		}
 		
-		print("tell application \"System Events\" to key code \(keycode)\(metaKey)")
+		// [shift, control, alt, command]
+		var flags = CGEventFlags()
 		
-		let task = Process()
-		task.launchPath = "/usr/bin/osascript"
-		task.arguments = ["-e", "tell application \"System Events\" to key code \(keycode)\(metaKey)"]
-		task.launch()
+		for (index, meta): (Int, CGEventFlags) in [.maskShift, .maskControl, .maskAlternate, .maskCommand].enumerated() {
+			if keymap.flags[index] {
+				flags.insert(meta)
+			}
+		}
+		
+		for timeAttempt in [1.5, 2, 3] {
+			DispatchQueue.main.asyncAfter(deadline: .now() + timeAttempt) {
+				let key = CGKeyCode(keycode)
+				let down = CGEvent(keyboardEventSource: nil, virtualKey: key, keyDown: true)!
+				let up = CGEvent(keyboardEventSource: nil, virtualKey: key, keyDown: false)!
+				
+				if !flags.isEmpty {
+					down.flags = flags
+					up.flags = flags
+				}
+				
+				down.post(tap: .cghidEventTap)
+				up.post(tap: .cghidEventTap)
+			}
+		}
 	}
 }
 
