@@ -34,15 +34,24 @@ It may surprise you how it improves your ability to keep your computer life orga
 * `⌃⌥←` and `⌃⌥→` go back or forward thru your Spaces selection history.
 
 
+## Set up:
+(Instructions shown for Sonoma)
+
+In <b>System Settings → Desktop & Dock → Mission Control</b>:
+
+* turn OFF "Automatically rearrenge Spaces based on most recent use"
+* turn OFF "Displays have separate Spaces" (if using more than one display)
+
+In <b>System Settings → Keyboard → Keyboard Shortcuts... → Mission Control → Mission Control</b> (not the checkbox but the submenu):
+
+* Check ✔︎ each space you want to be using and assign a keyboard short-cut to each one that does not conflict with some other short-cut. (If it conflicts, you will see a warning triangle next to your choice.) The names will not match your selection in NameSpace, but that's ok. They will be labelled "Switch to Desktop 1" etc.
+
+Lastly, in <b>System Settings → Privacy & Security</b>, grant permissions to NameSpace for Accessibility and Automation.
+
 
 ## Requirements:
 
-* macOS 10.12 (Sierra) thru 13.0 (Ventura)
-* Must turn off (in Mission Control prefs):
-	* "Automatically rearrenge Spaces based on most recent use"
-	* "Displays have separate Spaces" (if using more than one display)
-* All spaces must have a key combo associated with them and be enabled
-* NameSpace must be granted Accessibility and Automation permissions
+* macOS 10.12 (Sierra) thru 14.x (Sonoma)
 
 ### License:
 
