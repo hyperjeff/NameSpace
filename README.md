@@ -51,7 +51,7 @@ Lastly, in <b>System Settings → Privacy & Security</b>, grant permissions to N
 
 ## Requirements:
 
-* macOS 10.12 (Sierra) thru 14.x (Sonoma)
+* macOS 10.12 (Sierra) thru 15.x (Sequoia)
 
 ### License:
 
