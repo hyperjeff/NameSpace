@@ -4,7 +4,8 @@
 
 For years I've been sending Apple feature requests to allow each Space to be given a user-defined name. Until that happens, I offer this app to help.
 
-Note: This app requires that "Automatically rearrenge Spaces based on most recent use" and, only if you use multiple monitors, "Displays have separate Spaces", be turned OFF in System Mission Control prefs. For many, this is a deal killer, but not everyone has to use their Mac the same way. Maybe give this a try anyway, you may end up liking it.
+_Note:_
+This app requires that "Automatically rearrenge Spaces based on most recent use" and, only if you use multiple monitors, "Displays have separate Spaces", be turned OFF in System Mission Control prefs. For many, this is a deal breaker, but not everyone has to use their Mac the same way. Maybe give this a try anyway, you may end up liking it.
 
 NameSpace does these things:
 
@@ -17,7 +18,8 @@ NameSpace does these things:
 
 ### Ok, but Why:
 
-Spaces currently just labels each Space as "Desktop 1", etc. If you use dedicated Spaces for various tasks, you are left to your own devices for remembering which task is associated with which Space.
+Spaces currently just labels each Space as "Desktop 1", etc.
+If you use dedicated Spaces for various tasks, you are left to your own devices for remembering which task is associated with which Space.
 
 It may surprise you how it improves your ability to keep your computer life organized, especially if you have many different projects in flight at the same time.
 
@@ -51,7 +53,7 @@ Lastly, in <b>System Settings → Privacy & Security</b>, grant permissions to N
 
 ## Requirements:
 
-* macOS 10.12 (Sierra) thru 15.x (Sequoia)
+* macOS 10.12 (Sierra) thru 26.x (Tahoe)
 
 ### License:
 
